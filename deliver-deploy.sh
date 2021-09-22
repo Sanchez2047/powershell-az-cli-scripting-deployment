@@ -65,7 +65,7 @@ cd /tmp/coding-events-api/CodingEventsAPI
 # checkout branch that has the appsettings.json we need to connect to the KV
 git checkout $solution_branch
 
-cat << EOF > /etc/systemd/system/coding-events-api.service
+cat << EOF > /tmp/coding-events-api/CodingEventsAPI/appsettings.json
 {
   "Logging": {
     "LogLevel": {
@@ -75,7 +75,7 @@ cat << EOF > /etc/systemd/system/coding-events-api.service
     }
   },
   "AllowedHosts": "*",
-  "ServerOrigin": "$vmIP,
+  "ServerOrigin": "$vmIP",
   "KeyVaultName": "$kvName",
   "JWTOptions": {
     "Audience": "dacff9ec-c689-43e5-b72c-5b037acc87d8",

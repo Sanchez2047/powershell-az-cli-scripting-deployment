@@ -6,7 +6,7 @@ $vmSize = "Standard_B2s"
 $vmImage = $(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)
 $vmAdminUsername = "student"
 $vmAdminPassword = "LaunchCode-@zure1"
-$kvName = "$studentName-lc0922-ps-kv-2"
+$kvName = "$studentName-lc0922-ps-kv-3"
 $kvSecretName = "ConnectionStrings--Default"
 $kvSecretValue = "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
 
@@ -43,4 +43,4 @@ az vm run-command invoke --command-id RunShellScript --scripts @deliver-deploy.s
 
 
 # TODO: print VM public IP address to STDOUT or save it as a file
-echo $vmIP
+Write-Output "Please navigate to $vmIP to view Coding Events"
