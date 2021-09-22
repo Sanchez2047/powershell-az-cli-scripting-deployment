@@ -7,10 +7,10 @@ set -ex
 # for cloning in delivery
 
 # TODO: enter your GitHub user name
-github_username=
+github_username=Sanchez2047
 
 # TODO: enter the name of your project branch that has your updated code
-solution_branch=
+solution_branch=3-aadb2c
 
 # api
 api_service_user=api-user
@@ -64,6 +64,33 @@ cd /tmp/coding-events-api/CodingEventsAPI
 
 # checkout branch that has the appsettings.json we need to connect to the KV
 git checkout $solution_branch
+
+cat << EOF > /etc/systemd/system/coding-events-api.service
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "ServerOrigin": "$vmIP,
+  "KeyVaultName": "$kvName",
+  "JWTOptions": {
+    "Audience": "dacff9ec-c689-43e5-b72c-5b037acc87d8",
+    "MetadataAddress": "https://mikecolton0915tenant.b2clogin.com/MikeColton0915tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_susi-flow",
+    "RequireHttpsMetadata": true,
+    "TokenValidationParameters": {
+      "ValidateIssuer": true,
+      "ValidateAudience": true,
+      "ValidateLifetime": true,
+      "ValidateIssuerSigningKey": true
+    }
+  }
+}
+EOF
+
 
 dotnet publish -c Release -r linux-x64 -o "$api_working_dir"
 
