@@ -1,3 +1,4 @@
+
 #! /usr/bin/env bash
 
 set -ex
@@ -5,16 +6,6 @@ set -ex
 # -- env vars --
 
 # for cloning in delivery
-
-# TODO: enter your GitHub user name
-github_username=Sanchez2047
-
-# TODO: enter the name of your project branch that has your updated code
-solution_branch=3-aadb2c
-
-# api
-api_service_user=api-user
-api_working_dir=/opt/coding-events-api
 
 # needed to use dotnet from within RunCommand
 export HOME=/home/student
@@ -25,11 +16,11 @@ export DOTNET_CLI_HOME=/home/student
 # -- set up API service --
 
 # create API service user and dirs
-useradd -M "$api_service_user" -N
-mkdir "$api_working_dir"
+useradd -M 'api-user' -N
+mkdir '/opt/coding-events-api'
 
 chmod 700 /opt/coding-events-api/
-chown $api_service_user /opt/coding-events-api/
+chown api-user /opt/coding-events-api/
 
 # generate API unit file
 cat << EOF > /etc/systemd/system/coding-events-api.service
@@ -40,16 +31,16 @@ Description=Coding Events API
 WantedBy=multi-user.target
 
 [Service]
-User=$api_service_user
-WorkingDirectory=$api_working_dir
-ExecStart=/usr/bin/dotnet ${api_working_dir}/CodingEventsAPI.dll
+User=api-user
+WorkingDirectory=/opt/coding-events-api
+ExecStart=/usr/bin/dotnet /opt/coding-events-api/CodingEventsAPI.dll
 Restart=always
 RestartSec=10
 KillSignal=SIGINT
 SyslogIdentifier=coding-events-api
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
-Environment=DOTNET_HOME=$api_working_dir
+Environment=DOTNET_HOME=/opt/coding-events-api
 EOF
 
 # -- end setup API service --
@@ -58,41 +49,41 @@ EOF
 
 # deliver source code
 
-git clone https://github.com/$github_username/coding-events-api /tmp/coding-events-api
+git clone https://github.com/Sanchez2047/coding-events-api /tmp/coding-events-api
 
 cd /tmp/coding-events-api/CodingEventsAPI
 
 # checkout branch that has the appsettings.json we need to connect to the KV
-git checkout $solution_branch
+git checkout 3-aadb2c
 
 cat << EOF > /tmp/coding-events-api/CodingEventsAPI/appsettings.json
 {
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft": "Warning",
-      "Microsoft.Hosting.Lifetime": "Information"
+  'Logging': {
+    'LogLevel': {
+      'Default': 'Information',
+      'Microsoft': 'Warning',
+      'Microsoft.Hosting.Lifetime': 'Information'
     }
   },
-  "AllowedHosts": "*",
-  "ServerOrigin": "$vmIP",
-  "KeyVaultName": "$kvName",
-  "JWTOptions": {
-    "Audience": "dacff9ec-c689-43e5-b72c-5b037acc87d8",
-    "MetadataAddress": "https://mikecolton0915tenant.b2clogin.com/MikeColton0915tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_susi-flow",
-    "RequireHttpsMetadata": true,
-    "TokenValidationParameters": {
-      "ValidateIssuer": true,
-      "ValidateAudience": true,
-      "ValidateLifetime": true,
-      "ValidateIssuerSigningKey": true
+  'AllowedHosts': '*',
+  'ServerOrigin': '52.168.138.139',
+  'KeyVaultName': 'mike-lc0922-ps-kv-3',
+  'JWTOptions': {
+    'Audience': 'dacff9ec-c689-43e5-b72c-5b037acc87d8',
+    'MetadataAddress': 'https://mikecolton0915tenant.b2clogin.com/MikeColton0915tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_susi-flow',
+    'RequireHttpsMetadata': true,
+    'TokenValidationParameters': {
+      'ValidateIssuer': true,
+      'ValidateAudience': true,
+      'ValidateLifetime': true,
+      'ValidateIssuerSigningKey': true
     }
   }
 }
 EOF
 
 
-dotnet publish -c Release -r linux-x64 -o "$api_working_dir"
+dotnet publish -c Release -r linux-x64 -o '/opt/coding-events-api'
 
 # -- end deliver --
 
