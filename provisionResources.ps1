@@ -5,7 +5,7 @@ $vmName = "$studentName-ps-vm"
 $vmSize = "Standard_B2s"
 $vmImage = $(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)
 $vmAdminUsername = "student"
-$vmAdminPassword = "LaunchCode-@zure1"
+$vmAdminPassword = "Launchcode-@zure1"
 $kvName = "$studentName-lc0922-ps-kv-4"
 $kvSecretName = "ConnectionStrings--Default"
 $kvSecretValue = "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
