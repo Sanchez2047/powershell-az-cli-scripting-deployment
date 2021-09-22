@@ -6,11 +6,7 @@ $vmSize = "Standard_B2s"
 $vmImage = $(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)
 $vmAdminUsername = "student"
 $vmAdminPassword = "Launchcode-@zure1"
-<<<<<<< HEAD
 $kvName = "$studentName-lc0922-ps-kv-7"
-=======
-$kvName = "$studentName-lc0922-ps-kv-4"
->>>>>>> 33a3b470a1eee66ecbfd930dd3bfc651d774a562
 $kvSecretName = "ConnectionStrings--Default"
 $kvSecretValue = "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
 # TODO: enter your GitHub user name
