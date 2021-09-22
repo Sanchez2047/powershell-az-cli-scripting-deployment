@@ -5,8 +5,8 @@ $vmName = "$studentName-ps-vm"
 $vmSize = "Standard_B2s"
 $vmImage = $(az vm image list --query "[? contains(urn, 'Ubuntu')] | [0].urn" -o tsv)
 $vmAdminUsername = "student"
-$vmAdminPassword = "LaunchCode-@zure1"
-$kvName = "$studentName-lc0922-ps-kv-4"
+$vmAdminPassword = "Launchcode-@zure1"
+$kvName = "$studentName-lc0922-ps-kv-7"
 $kvSecretName = "ConnectionStrings--Default"
 $kvSecretValue = "server=localhost;port=3306;database=coding_events;user=coding_events;password=launchcode"
 # TODO: enter your GitHub user name
@@ -65,8 +65,8 @@ export DOTNET_CLI_HOME=/home/student
 # -- set up API service --
 
 # create API service user and dirs
-useradd -M '$api_service_user' -N
-mkdir '$api_working_dir'
+useradd -M `"$api_service_user`" -N
+mkdir `"$api_working_dir`"
 
 chmod 700 /opt/coding-events-api/
 chown $api_service_user /opt/coding-events-api/
@@ -107,32 +107,32 @@ git checkout $solution_branch
 
 cat << EOF > /tmp/coding-events-api/CodingEventsAPI/appsettings.json
 {
-  'Logging': {
-    'LogLevel': {
-      'Default': 'Information',
-      'Microsoft': 'Warning',
-      'Microsoft.Hosting.Lifetime': 'Information'
+  `"Logging`": {
+    `"LogLevel`": {
+      `"Default`": `"Information`",
+      `"Microsoft`": `"Warning`",
+      `"Microsoft.Hosting.Lifetime`": `"Information`"
     }
   },
-  'AllowedHosts': '*',
-  'ServerOrigin': '$vmIP',
-  'KeyVaultName': '$kvName',
-  'JWTOptions': {
-    'Audience': 'dacff9ec-c689-43e5-b72c-5b037acc87d8',
-    'MetadataAddress': 'https://mikecolton0915tenant.b2clogin.com/MikeColton0915tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_susi-flow',
-    'RequireHttpsMetadata': true,
-    'TokenValidationParameters': {
-      'ValidateIssuer': true,
-      'ValidateAudience': true,
-      'ValidateLifetime': true,
-      'ValidateIssuerSigningKey': true
+  `"AllowedHosts`": `"*`",
+  `"ServerOrigin`": `"$vmIP`",
+  `"KeyVaultName`": `"$kvName`",
+  `"JWTOptions`": {
+    `"Audience`": `"dacff9ec-c689-43e5-b72c-5b037acc87d8`",
+    `"MetadataAddress`": `"https://mikecolton0915tenant.b2clogin.com/MikeColton0915tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_susi-flow`",
+    `"RequireHttpsMetadata`": true,
+    `"TokenValidationParameters`": {
+      `"ValidateIssuer`": true,
+      `"ValidateAudience`": true,
+      `"ValidateLifetime`": true,
+      `"ValidateIssuerSigningKey`": true
     }
   }
-}
+} 
 EOF
 
 
-dotnet publish -c Release -r linux-x64 -o '$api_working_dir'
+dotnet publish -c Release -r linux-x64 -o `"$api_working_dir`"
 
 # -- end deliver --
 
@@ -151,4 +151,8 @@ az vm run-command invoke --command-id RunShellScript --scripts @deliver-deploy.s
 
 
 # TODO: print VM public IP address to STDOUT or save it as a file
+Write-Output "-----------------------------------------------"
 Write-Output "Please navigate to $vmIP to view Coding Events"
+Write-Output "-----------------------------------------------"
+
+start https://$vmIP

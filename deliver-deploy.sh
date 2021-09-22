@@ -16,8 +16,8 @@ export DOTNET_CLI_HOME=/home/student
 # -- set up API service --
 
 # create API service user and dirs
-useradd -M 'api-user' -N
-mkdir '/opt/coding-events-api'
+useradd -M \'\"api-user\'\" -N
+mkdir \"/opt/coding-events-api\"
 
 chmod 700 /opt/coding-events-api/
 chown api-user /opt/coding-events-api/
@@ -58,32 +58,32 @@ git checkout 3-aadb2c
 
 cat << EOF > /tmp/coding-events-api/CodingEventsAPI/appsettings.json
 {
-  'Logging': {
-    'LogLevel': {
-      'Default': 'Information',
-      'Microsoft': 'Warning',
-      'Microsoft.Hosting.Lifetime': 'Information'
+  \"Logging\": {
+    \"LogLevel\": {
+      \"Default\": \"Information\",
+      \"Microsoft\": \"Warning\",
+      \"Microsoft.Hosting.Lifetime\": \"Information\"
     }
   },
-  'AllowedHosts': '*',
-  'ServerOrigin': '52.168.138.139',
-  'KeyVaultName': 'mike-lc0922-ps-kv-3',
-  'JWTOptions': {
-    'Audience': 'dacff9ec-c689-43e5-b72c-5b037acc87d8',
-    'MetadataAddress': 'https://mikecolton0915tenant.b2clogin.com/MikeColton0915tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_susi-flow',
-    'RequireHttpsMetadata': true,
-    'TokenValidationParameters': {
-      'ValidateIssuer': true,
-      'ValidateAudience': true,
-      'ValidateLifetime': true,
-      'ValidateIssuerSigningKey': true
+  \"AllowedHosts\": \"*\",
+  \"ServerOrigin\": \"20.106.131.196\",
+  \"KeyVaultName\": \"mike-lc0922-ps-kv-6\",
+  \"JWTOptions\": {
+    \"Audience\": \"dacff9ec-c689-43e5-b72c-5b037acc87d8\",
+    \"MetadataAddress\": \"https://mikecolton0915tenant.b2clogin.com/MikeColton0915tenant.onmicrosoft.com/v2.0/.well-known/openid-configuration?p=B2C_1_susi-flow\",
+    \"RequireHttpsMetadata\": true,
+    \"TokenValidationParameters\": {
+      \"ValidateIssuer\": true,
+      \"ValidateAudience\": true,
+      \"ValidateLifetime\": true,
+      \"ValidateIssuerSigningKey\": true
     }
   }
-}
+} 
 EOF
 
 
-dotnet publish -c Release -r linux-x64 -o '/opt/coding-events-api'
+dotnet publish -c Release -r linux-x64 -o \"/opt/coding-events-api\"
 
 # -- end deliver --
 
